@@ -34,9 +34,8 @@ public:
     int no_push = 0;
     int no_pop = 0;
 
-/** \brief checks whether the provided value is marks the end of input
+/** \brief checks whether the input has run out
  *
- * \param i the value which should be checked
  * \return true if end of input
  *
  */
@@ -112,17 +111,17 @@ public:
 
     void set_end_of_input()
     {
-        std::cout << "  setting end of input... ";
+//        std::cout << "  setting end of input... ";
         buffer_empty.acquire();
         lock_buffer.lock();
 
         buffer.push_back(nullptr);
 
-        std::cout << "set!\n";
+//        std::cout << "set!\n";
 
         lock_buffer.unlock();
         buffer_data.release();
-        std::cout << "  getting out\n";
+//        std::cout << "  getting out\n";
     }
 
 /** \brief for debugging
@@ -144,14 +143,30 @@ public:
 
     ~Buffer()
     {
-        std::cout << "destructing buffer\n";
+//        std::cout << "destructing buffer\n";
         lock_buffer.lock();
-        while (buffer.front()!=nullptr)
+
+        for(auto i = buffer.begin(); i!= buffer.end(); i++)
         {
-            std::cout << "not all input in buffer has beeen emptied!\n";
-            delete buffer.front();
-            buffer.pop_front();
+
+            if (*i != nullptr)
+            {
+//                std::cout << "not all input in buffer has beeen emptied!\n";
+                delete *i;
+            }
+//            else
+//                std::cout << "the end of input mark\n";
         }
+        buffer.clear();
+
+
+//        while (buffer.front()!=nullptr)
+//        {
+//            std::cout << "not all input in buffer has beeen emptied!\n";
+//            delete buffer.front();
+//            buffer.pop_front();
+//        }
+        lock_buffer.unlock();
     }
 
 };

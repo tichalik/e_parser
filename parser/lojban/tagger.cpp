@@ -1,15 +1,15 @@
 #include "lojban/tagger.h"
 
-Word Lojban_tagger::tag( const Word & input)
+Word* Lojban_tagger::tag( Word* input)
 {
-    Word output_word(input);
+    Word* output_word = input;
 
-    std::vector<int> degree(output_word.get_size(),1);
+    std::vector<int> degree(output_word->get_size(),1);
 
 
     //the loop starts from the second element so the first and last are computed manually
 
-    std::string symbol = output_word.get_symbol_at(0);
+    std::string symbol = output_word->get_symbol_at(0);
 
     if (symbol == "&")
     {
@@ -21,9 +21,9 @@ Word Lojban_tagger::tag( const Word & input)
     }
 
 
-    for (int i=1; i<output_word.get_size()-1; i++)
+    for (int i=1; i<output_word->get_size()-1; i++)
     {
-        std::string symbol = output_word.get_symbol_at(i);
+        std::string symbol = output_word->get_symbol_at(i);
 
         if (symbol == "|")
         {
@@ -77,25 +77,25 @@ Word Lojban_tagger::tag( const Word & input)
 
 
 
-    for(int i=0; i<output_word.get_size();i++)
+    for(int i=0; i<output_word->get_size();i++)
     {
-        std::string symbol = output_word.get_symbol_at(i);
+        std::string symbol = output_word->get_symbol_at(i);
         if (symbol == "(")
-            output_word.tag_at(i, "BRACKET_L");
+            output_word->tag_at(i, "BRACKET_L");
         else if (symbol == ")")
-            output_word.tag_at(i, "BRACKET_R");
+            output_word->tag_at(i, "BRACKET_R");
         else if (symbol == "[")
-            output_word.tag_at(i, "OPTION_L");
+            output_word->tag_at(i, "OPTION_L");
         else if (symbol == "]")
-            output_word.tag_at(i, "OPTION_R");
+            output_word->tag_at(i, "OPTION_R");
         else if (symbol == "/")
-            output_word.tag_at(i, "SLASH");
+            output_word->tag_at(i, "SLASH");
         else if (symbol == "=")
-            output_word.tag_at(i, "SEPARATOR");
+            output_word->tag_at(i, "SEPARATOR");
         else if (symbol == "...")
-            output_word.tag_at(i, "OPTIONAL_REPETITION");
+            output_word->tag_at(i, "OPTIONAL_REPETITION");
         else
-            output_word.tag_at(i, ("S"+std::to_string(degree[i])));
+            output_word->tag_at(i, ("S"+std::to_string(degree[i])));
     }
 
     return output_word;

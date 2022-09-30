@@ -15,7 +15,7 @@ class Grammar_from_tree: public Grammar
     std::unordered_map<std::string, std::unordered_set<int>> nonterminals; /**< symbol and the indexes of rules in which it appears */
     std::unordered_map<std::string, std::unordered_set<int>> terminals; /**< symbol and the indexes of rules in which it appears */
     std::string head; /**< it exists for the sake of formality, not used for now */
-    std::vector<Rule> rules;
+    std::vector<std::pair<int, Rule>> rules; //line id of of from where the rule originated and the rule itself
 
     Tagger * transforming_tagger;
 public:
@@ -27,6 +27,10 @@ public:
 
     virtual std::vector<std::string> get_nonterminals();
     virtual std::vector<std::string> get_terminals();
+
+    void add_rules_with_id(const std::vector<std::pair<int, Rule>>& new_rules );
+    std::vector<std::pair<int, Rule>>  get_rules_with_id();
+    void clear_rules();
 
 
 

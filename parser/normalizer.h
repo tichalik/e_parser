@@ -2,6 +2,7 @@
 #define NORMALIZER
 
 #include "grammar.h"
+#include "logger.h"
 
 #include <string>
 #include <vector>
@@ -11,14 +12,19 @@
 
 class Normalizer
 {
+protected:
     //changelog
+    Logger * logger;
+
 public:
+    Normalizer(Logger*);
     virtual bool normalize(Grammar* grammar)=0;
 };
 
 class Half_chomskyficator: public Normalizer
 {
 public:
+    Half_chomskyficator(Logger*);
     virtual bool normalize(Grammar* grammar);
 };
 
@@ -35,6 +41,7 @@ class Chomskyficator: public Normalizer
 //                                       const std::unordered_map<std::string, std::vector<std::vector<std::string>>> &rules,
 //                                       const std::unordered_set<std::string> & terminals);
 public:
+    Chomskyficator(Logger*);
     virtual bool normalize(Grammar* grammar);
 };
 

@@ -10,8 +10,8 @@
 class Grammar_from_tree_loader: public Grammar_loader
 {
 public:
-    Grammar_from_tree_loader();
-    virtual Grammar* read(const std::string &path);
+    Grammar_from_tree_loader(Logger *&);
+    virtual Grammar* load(const std::string &path);
 };
 
 

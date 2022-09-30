@@ -6,7 +6,7 @@
 class Lojban_tagger: public Tagger
 {
 public:
-    Word tag(const Word & input);
+    Word* tag(Word * input);
 };
 
 #endif // LOJBAN_TAGGER

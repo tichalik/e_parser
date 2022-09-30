@@ -64,3 +64,10 @@ std::string Word::get_tag_at(int i)
 {
     return this->symbols[i].tag;
 }
+
+
+Word::Word(const Word && w)
+{
+    for (Symbol s: w.symbols)
+        symbols.push_back(s);
+}

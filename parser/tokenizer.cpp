@@ -1,44 +1,27 @@
 #include "tokenizer.h"
 
-
-Word Between_whitespaces_tokenizer::tokenize(const std::string & input)
+Tokenizer::Tokenizer(Logger * _logger): logger(_logger)
 {
-    Word output_word;
+
+}
+
+
+Between_whitespaces_tokenizer::Between_whitespaces_tokenizer(Logger * _logger): Tokenizer(_logger)
+{
+
+}
+
+std::pair<int, Word*> Between_whitespaces_tokenizer::tokenize(const std::pair<int, std::string> & input)
+{
+    Word* output_word = new Word;
     std::stringstream s;
-    s << input;
+    s << input.second;
     std::string tmp;
 
     while (s >> tmp)
-        output_word.insert_symbol(tmp);
+        output_word->insert_symbol(tmp);
 
-    return output_word;
+    return {input.first, output_word};
 
-}
-
-
-Word Letter_tokenizer::tokenize(const std::string & input)
-{
-
-    Word output_word;
-    std::string tmp;
-    for (unsigned int i=0; i<input.size(); i++)
-        if (input[i]!=' '&&input[i]!='\t'&&input[i]!='\n')
-        {
-            tmp = input[i]; //to jest dziwne, ale inaczej nie kompiluje :v
-            output_word.insert_symbol(tmp);
-        }
-    return output_word;
-}
-
-Word Character_tokenizer::tokenize(const std::string & input)
-{
-    Word output_word;
-    std::string tmp;
-    for (unsigned int i=0; i<input.size(); i++)
-        {
-            tmp = input[i]; //to jest dziwne, ale inaczej nie kompiluje :v
-            output_word.insert_symbol(tmp);
-        }
-    return output_word;
 }
 

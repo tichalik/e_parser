@@ -1,7 +1,7 @@
 #include "grammar_from_XML/reader.h"
 
 
-Grammar_reader_from_XML::Grammar_reader_from_XML()
+Grammar_reader_from_XML::Grammar_reader_from_XML(Logger * l): logger(l)
 {
 
 }
@@ -14,18 +14,19 @@ Grammar_from_XML * Grammar_reader_from_XML::read(const std::string & path)
 
     if (file)
     {
+        std::stringstream file_copy;
+        file_copy << file.rdbuf();
+        file.close();
 //
-        std::cout << ("file "+ path + " opened.\n");
+        logger->log_message("file "+ path + " opened.\n");
         std::string line;
         std::string file_contents;
 
-        while (std::getline(file, line))
+        while (std::getline(file_copy, line))
         {
 //            std::cout << line << "\n";
             file_contents += line + "\n";
         }
-
-        file.close();
 
 
         preprocessed_input = normalize(file_contents);
@@ -58,7 +59,7 @@ Grammar_from_XML * Grammar_reader_from_XML::read(const std::string & path)
             for (int j=0; j<tokenized[i].second.size() && all_ok;j++)
             {
                 std::string token = tokenized[i].second[j];
-                int current_line = tokenized[i].first;
+                std::string current_line = std::to_string(tokenized[i].first);
                 if (token[0]=='<') //tag
                 {
     //                std::cout << token <<std::endl;
@@ -68,7 +69,7 @@ Grammar_from_XML * Grammar_reader_from_XML::read(const std::string & path)
                     if (tag != "terminals" && tag != "nonterminals" && tag != "s" && tag != "head" && tag != "rules" && tag != "rule" && tag != "r_head" && tag != "r_body" )
                     {
                         all_ok = false;
-                        std::cout << "Error! at line" << current_line << ": invalid tag "+ tag;
+                        logger->log_error("Error! at line" + current_line +": invalid tag "+ tag);
                     }
                     else if (token[1]=='/') //closing tag
                     {
@@ -76,12 +77,12 @@ Grammar_from_XML * Grammar_reader_from_XML::read(const std::string & path)
                         if (stack.empty())
                         {
                             all_ok = false;
-                            std::cout << "Error! at line" << current_line << ": closing tag "  << tag << ", but no tag has been opened\n";
+                            logger->log_error("Error! at line" +current_line + ": closing tag "  + tag +", but no tag has been opened\n");
                         }
                         else if (stack.top()!=tag)
                         {
                             all_ok = false;
-                            std::cout << "Error! at line" << current_line << ": incompatible closing tag, last opened was " << stack.top() << ", now closing with "  << tag << "\n";
+                            logger->log_error("Error! at line" +current_line + ": incompatible closing tag, last opened was " + stack.top() + ", now closing with "  +tag +"\n");
                         }
                         else
                         {
@@ -94,7 +95,7 @@ Grammar_from_XML * Grammar_reader_from_XML::read(const std::string & path)
                                     if (nonterminals.contains(prev_token))
                                     {
                                         all_ok = false;
-                                        std::cout << "Error! at line" << current_line << ": " << prev_token <<  " cannot be both in terminals and nonterminals\n";
+                                        logger->log_error("Error! at line" +current_line +": " + prev_token +  " cannot be both in terminals and nonterminals\n");
                                     }
                                     else
                                         terminals.insert(prev_token);
@@ -104,7 +105,7 @@ Grammar_from_XML * Grammar_reader_from_XML::read(const std::string & path)
                                     if (terminals.contains(prev_token))
                                     {
                                         all_ok = false;
-                                        std::cout << "Error! at line" << current_line << ": " << prev_token << " cannot be both in terminals and nonterminals\n";
+                                        logger->log_error("Error! at line" +current_line +": " + prev_token + " cannot be both in terminals and nonterminals\n");
                                     }
                                     else
                                         nonterminals.insert(prev_token);
@@ -118,7 +119,7 @@ Grammar_from_XML * Grammar_reader_from_XML::read(const std::string & path)
                                     if (!nonterminals.contains(prev_token))
                                     {
                                         all_ok = false;
-                                        std::cout << "Error! at line" << current_line << ": " << prev_token  <<" not in nonterminals\n";
+                                        logger->log_error("Error! at line" +current_line +": " + prev_token  +" not in nonterminals\n");
                                     }
                                     else
                                         r_head = prev_token;
@@ -128,7 +129,7 @@ Grammar_from_XML * Grammar_reader_from_XML::read(const std::string & path)
                                     if (!nonterminals.contains(prev_token) && !terminals.contains(prev_token))
                                     {
                                         all_ok = false;
-                                        std::cout << "Error! at line" << current_line << ": " << prev_token  <<" neither in nonterminals nor in terminals\n";
+                                        logger->log_error("Error! at line" +current_line + ": " + prev_token  + " neither in nonterminals nor in terminals\n");
                                     }
                                     else
                                         r_body.push_back(prev_token);
@@ -139,12 +140,12 @@ Grammar_from_XML * Grammar_reader_from_XML::read(const std::string & path)
                                 if (r_head =="")
                                 {
                                     all_ok = false;
-                                    std::cout << "Error! at line" << current_line << ": no rule head\n";
+                                    logger->log_error("Error! at line" +current_line + ": no rule head\n");
                                 }
                                 else if (r_body.size()==0)
                                 {
                                     all_ok = false;
-                                    std::cout << "Error! at line" << current_line << ": no rule body\n";
+                                    logger->log_error("Error! at line" +current_line +": no rule body\n");
                                 }
                                 else
                                 {
@@ -167,50 +168,50 @@ Grammar_from_XML * Grammar_reader_from_XML::read(const std::string & path)
                             if ((stack.top()=="nonterminals" || stack.top()=="terminals" || stack.top()=="head" || stack.top()=="r_head" || stack.top()=="r_body") && tag!="s")
                             {
                                 all_ok=false;
-                                std::cout << "Error! at line" << current_line << ": expected s tag, got " + tag+"\n";
+                                logger->log_error("Error! at line" +current_line +": expected s tag, got " + tag+"\n");
                             }
                             else if ((stack.top()=="rules") && tag!="rule")
                             {
                                 all_ok=false;
-                                std::cout << "Error! at line" << current_line << ": expected rule tag, got " + tag+"\n";
+                                logger->log_error("Error! at line" +current_line +": expected rule tag, got " + tag+"\n");
                             }
                             else if ((stack.top()=="rule") && tag!="r_body" && tag!="r_head")
                             {
                                 all_ok=false;
-                                std::cout << "Error! at line" << current_line << ": expected r_body/r_head tag, got " + tag+"\n";
+                                logger->log_error("Error! at line" +current_line + ": expected r_body/r_head tag, got " + tag+"\n");
                             }
                         }
                         else if (tag!="nonterminals" && tag!="terminals" && tag!="head" && tag!="rules" )
                         {
                             all_ok = false;
-                            std::cout << "Error! at line" << current_line << ": on the highest level expected tag nonterminals/terminals/head/rules, got " + tag +"\n";                        }
+                            logger->log_error("Error! at line" +current_line + ": on the highest level expected tag nonterminals/terminals/head/rules, got " + tag +"\n");                        }
 
                         if (all_ok)
                         {
                             if (tag == "head" && head!="")
                             {
                                 all_ok = false;
-                                std::cout << "Error! at line" << current_line << ": redefinition of head\n";
+                                logger->log_error("Error! at line" +current_line + ": redefinition of head\n");
                             }
                             else if (tag == "r_head" && r_head!="")
                             {
                                 all_ok = false;
-                                std::cout << "Error! at line" << current_line << ": redefinition of r_head\n";
+                                logger->log_error("Error! at line" +current_line + ": redefinition of r_head\n");
                             }
                             else if (tag == "terminals" && !terminals.empty())
                             {
                                 all_ok = false;
-                                std::cout << "Error! at line" << current_line << ": redefinition of terminals\n";
+                               logger->log_error("Error! at line" +current_line +": redefinition of terminals\n");
                             }
                             else if (tag == "nonterminals" && !nonterminals.empty())
                             {
                                 all_ok = false;
-                                std::cout << "Error! at line" << current_line << ": redefinition of nonterminals\n";
+                                logger->log_error("Error! at line" +current_line + ": redefinition of nonterminals\n");
                             }
                             else if (tag == "r_body" && !r_body.empty())
                             {
                                 all_ok = false;
-                                std::cout << "Error! at line" << current_line << ": redefinition of r_body\n";
+                                logger->log_error("Error! at line" +current_line + ": redefinition of r_body\n");
                             }
                             else
                             {
@@ -232,7 +233,7 @@ Grammar_from_XML * Grammar_reader_from_XML::read(const std::string & path)
         if (!stack.empty())
         {
             all_ok = false;
-            std::cout << "Error! at line " << tokenized.size()<< ": no closing tag for " + stack.top()<<"\n";
+            logger->log_error("Error! at line" +std::to_string(tokenized.size()) +": no closing tag for " + stack.top() + "\n");
         }
 
         Grammar_from_XML* result;
@@ -244,7 +245,7 @@ Grammar_from_XML * Grammar_reader_from_XML::read(const std::string & path)
     }
     else
     {
-        std::cout << "Error! cannot open "+ path + " file.\n";
+        logger->log_error("Error! cannot open "+ path + " file.\n");
         return nullptr;
     }
 }
@@ -333,7 +334,7 @@ std::vector<std::pair<int,std::vector<std::string>>> Grammar_reader_from_XML::to
              if (m.prefix()!=' '&&m.prefix()!="") //we don't mind spaces
             {
                 std::string tmp = m.prefix(); //cant glue together char[] and strings in the next line
-                std::cout << "Error! at line " << tokenized.first << ": symbol " << tmp  << " cant be tokenized\n";
+               logger->log_error("Error! at line " + std::to_string(tokenized.first) + ": symbol " + tmp  + " cant be tokenized\n");
                 ok = false;
                 break;
             }

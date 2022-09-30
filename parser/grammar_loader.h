@@ -2,6 +2,7 @@
 #define GRAMMAR_LOADER
 
 #include "grammar.h"
+#include "logger.h"
 
 #include <fstream>
 #include <string>
@@ -10,9 +11,10 @@
 class Grammar_loader
 {
 protected:
-    Grammar_loader();
+    Logger * logger;
 public:
-    virtual Grammar* read(const std::string &path)=0;
+    Grammar_loader(Logger*);
+    virtual Grammar* load(const std::string &path)=0;
 };
 
 

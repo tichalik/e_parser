@@ -1,36 +1,35 @@
 #include "reader.h"
 
-#include <iostream>
-
-//Reader::Reader(Buffer<std::string>* _output): output(_output)
-//{
-//
-//}
-
-std::vector<std::string> Reader::read(const std::string &directory)
+Reader::Reader(Logger * _logger): logger(_logger)
 {
 
-    std::vector<std::string> output;
+}
+
+std::vector<std::pair<int, std::string>> Reader::read(const std::string &directory)
+{
+
+    std::vector<std::pair<int, std::string>> output;
     for (std::filesystem::directory_entry entry: std::filesystem::directory_iterator(std::filesystem::path(directory)))
     {
-
-        if (entry.path().extension()==".txt")
+        if (entry.path().extension() == ".txt")
         {
+            logger->add_file(entry.path());
+
             std::ifstream file(entry.path());
             if (file)
             {
+                std::stringstream file_content;
+                file_content << file.rdbuf();
+                file.close();
+
                 std::string line;
-                while (std::getline(file, line))
+                int linecount = 1;
+                while (std::getline(file_content, line))
                 {
                     //removing comments starting with #
-                    std::regex r("#"); //NIE MA ODWOŁYWANIA KOMENTARZY!!
-                    std::smatch match;
-                    if (std::regex_search(line, match, r))
-                    {
-                        line = match.prefix();
-                        if (match.length()!=1)
-                            line +=match.str(0)[0];
-                    }
+                    int pos = line.find("#");
+                    if (pos!=std::string::npos)
+                        line = line.substr(0, pos);
 
                     //normalizing the line
                     std::stringstream s;
@@ -43,13 +42,15 @@ std::vector<std::string> Reader::read(const std::string &directory)
 
                     if (line!="")
                     {
-        //                std::cout << line <<std::endl; // TO POTEM ZNIKNIE, BĘDZIEMY WSADZAĆ DO BUFORA
-                       output.push_back(line);
+                        int line_id = logger->add_line(linecount);
+//                        std::cout << line_id << ". " << line <<std::endl; // TO POTEM ZNIKNIE, BĘDZIEMY WSADZAĆ DO BUFORA
+                       output.push_back({ line_id, line });
                     }
+                    linecount++;
 
                 }
-                file.close();
- //               std::cout << "all read\n";
+
+                logger->log_message("finished reading " + entry.path().string() +"\n");
             }
         }
     }

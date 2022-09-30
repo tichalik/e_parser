@@ -4,13 +4,14 @@
 #include <filesystem>
 #include <fstream>
 #include <string>
-#include <regex>
 #include <sstream>
 
+#include "logger.h"
 
 class Reader
 {
 //    Buffer<std::string>* output; /**< output */
+    Logger * logger;
 public:
 
     /** \brief initializes reading process of files within the given directory
@@ -18,7 +19,8 @@ public:
      *
      */
 
-    std::vector<std::string> read(const std::string& directory);
+     Reader(Logger * _logger);
+    std::vector<std::pair<int, std::string>> read(const std::string& directory);
 };
 
 #endif // READER

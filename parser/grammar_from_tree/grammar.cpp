@@ -13,10 +13,10 @@
     s << "\nHead: " << g.head << "\n";
 
     s<< "\n";
-    for( Rule r: g.rules)
+    for( std::pair<int, Rule> r: g.rules)
     {
-        s<< r.left << " -> ";
-        for (std::string str: r.right)
+        s<< r.second.left << " -> ";
+        for (std::string str: r.second.right)
             s<< str <<" ";
         s<< "\n";
     }
@@ -26,22 +26,23 @@
 Word Grammar_from_tree::terminals_to_word()
 {
     Word output;
-//    std::cout << "------------terminals2word-------------";
+//    std::cout << "------------terminals2word-------------\n";
     for (std::pair<std::string, std::unordered_set<int>> t:terminals)
     {
         output.insert_symbol(t.first);
-  //      std::cout << t.first <<"\n";
+//        std::cout << t.first <<"\n";
     }
 
+//    std::cout << "----------finishing terminals2word---------\n";
     return output;
 }
 
 void Grammar_from_tree::transform_terminals( std::unordered_map<std::string, std::string> transforming_dictionary)
 {
 
-    for(Rule &rule: rules)
+    for(std::pair<int, Rule> &rule: rules)
     {
-        for (std::string &symbol: rule.right)
+        for (std::string &symbol: rule.second.right)
         {
             if(transforming_dictionary.contains(symbol))
                 symbol = transforming_dictionary[symbol];
@@ -53,10 +54,26 @@ void Grammar_from_tree::transform_terminals( std::unordered_map<std::string, std
     update(); //the new terminals will be generated again from the rules, just as in case of first rule creationn
 }
 
+void Grammar_from_tree::add_rules_with_id(const std::vector<std::pair<int, Rule>>& new_rules )
+{
+    for (std::pair<int, Rule> r: new_rules)
+        rules.push_back(r);
+}
+
+std::vector<std::pair<int, Rule>>  Grammar_from_tree::get_rules_with_id()
+{
+    return rules;
+}
+
+void Grammar_from_tree::clear_rules()
+{
+    rules.clear();
+}
+
 void Grammar_from_tree::set_rules(const std::vector<Rule> & input_rules)
 {
     for (Rule r: input_rules)
-        rules.push_back(r);
+        rules.push_back({-1,r});
 }
 
 void Grammar_from_tree::update()
@@ -65,24 +82,26 @@ void Grammar_from_tree::update()
 
     //remove duplicate rules
 
-//    std::ranges::sort(test);
 
-//    std::ranges::sort(rules); //teoretycznie to by siê da³o na ranges zrobiæ, ale z jakiegoœ powodu to nie dzia³a, chocia¿ dla normalnego wektora intów ju¿ tak
+    std::vector<std::pair<int, Rule>> new_rules;
 
-
-
-    std::vector<Rule> tmp_rules;
-    bool aready_there;
-    for (Rule r: rules)
+    for (int i=0; i<rules.size(); i++)
     {
-        aready_there = false;
-        for (Rule ru: tmp_rules)
-            if (ru == r)
-                aready_there = true;
-        if (!aready_there)
-            tmp_rules.push_back(r);
+        bool already_there = false;
+        for (int j=0; j<i; j++)
+            if (rules[i].second.left == rules[j].second.left && rules[i].second.right == rules[j].second.right)
+        {
+            already_there = true;
+//            std::cout << "found duplicate " << rules[i].second.left << " -> " << rules[i].second.right[0] << " " << rules[i].second.right[1] <<"\n";
+        }
+        if (!already_there)
+            new_rules.push_back(rules[i]);
+
     }
-    rules = tmp_rules;
+
+    rules = new_rules;
+    nonterminals.clear();
+    terminals.clear();
 
 //    std::sort(rules.begin(), rules.end());
 //    std::unique(rules.begin(), rules.end());
@@ -90,20 +109,20 @@ void Grammar_from_tree::update()
     //adding symbols to terminals
     for (int i = 0; i<rules.size(); i++)
     {
-        nonterminals[rules[i].left].insert(i);
-        for (std::string r: rules[i].right)
+        nonterminals[rules[i].second.left].insert(i);
+        for (std::string r: rules[i].second.right)
             terminals[r].insert(i);
     }
 
     //update nonterminals
 
-    for (Rule r: rules)
+    for (std::pair<int, Rule> r: rules)
     {
-        if (terminals.contains(r.left)) //the symbols to the left cannot be terminal
+        if (terminals.contains(r.second.left)) //the symbols to the left cannot be terminal
         {
-            for (int rule_id: terminals[r.left])
-                nonterminals[r.left].insert(rule_id);
-            terminals.erase(r.left);
+            for (int rule_id: terminals[r.second.left])
+                nonterminals[r.second.left].insert(rule_id);
+            terminals.erase(r.second.left);
         }
     }
 
@@ -111,7 +130,10 @@ void Grammar_from_tree::update()
 
 std::vector<Rule> Grammar_from_tree::get_rules()
 {
-    return rules;
+    std::vector<Rule> clean_rules;
+    for (std::pair<int, Rule> r: rules)
+        clean_rules.push_back(r.second);
+    return clean_rules;
 }
 
 std::string Grammar_from_tree::get_head()

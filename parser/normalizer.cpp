@@ -1,5 +1,16 @@
 #include "normalizer.h"
+Normalizer::Normalizer(Logger * l): logger(l)
+{
 
+}
+Half_chomskyficator::Half_chomskyficator(Logger * l): Normalizer(l)
+{
+
+}
+Chomskyficator::Chomskyficator(Logger * l): Normalizer(l)
+{
+
+}
 
 
 bool Half_chomskyficator::normalize(Grammar * original_grammar)

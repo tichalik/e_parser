@@ -30,6 +30,7 @@ class Word
 public:
 
     Word(); /**< default constructor required for storing in Buffer */
+    Word(const Word &&);
 
     /** \brief creates a new symbol at the end of word and sets its symbol
      *

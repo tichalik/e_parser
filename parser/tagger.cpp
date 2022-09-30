@@ -1,36 +1,44 @@
 #include "tagger.h"
 
-
-#include <iostream>
-Word Part_of_speech_tagger::tag(const Word & input)
+Tagger::Tagger(Logger * _logger):logger(_logger)
 {
-    Word output_word (input);
 
-//    for (int i=0; i<output_word.get_size(); i++)
-//    {
-//        std::function<bool(const std::pair<std::regex, std::string> &)> check_which_fits =
-//            [&output_word,i](const std::pair<std::regex, std::string> &r)
-//                {return std::regex_match(output_word.get_symbol_at(i), r.first);};
-//
-//        for(std::pair<std::regex, std::string> classificator: classificators
-//            | std::views::filter(check_which_fits))
-//                if (output_word.get_tag_at(i)=="")
-//                    output_word.tag_at(i,classificator.second);
-//                    //if we want to keep all the tags, then here it should just push it back to the vector of tags, nomatter the checking
-//
-//    }
-    for (int i=0; i<output_word.get_size(); i++)
+}
+
+
+Part_of_speech_tagger::Part_of_speech_tagger(Logger * _logger): Tagger(_logger)
+{
+
+}
+
+std::pair<int, Word*> Part_of_speech_tagger::tag(std::pair<int, Word*> input)
+{
+    Word* output_word  = input.second;
+    bool all_ok = true;
+
+    for (int i=0; i<output_word->get_size(); i++)
     {
+        bool tagged = false;
         for (std::pair<std::regex, std::string> classificator: classificators)
         {
-    //        std::regex r(classificator.first);
-            if (output_word.get_tag_at(i)=="")
-                if (std::regex_match(output_word.get_symbol_at(i), classificator.first))
-                    output_word.tag_at(i, classificator.second);
+            if (output_word->get_tag_at(i)=="")
+                if (std::regex_match(output_word->get_symbol_at(i), classificator.first))
+                {
+                    tagged = true;
+                    output_word->tag_at(i, classificator.second);
+                }
         }
+        if (!tagged)
+        {
+            all_ok = false;
+            logger->log_error(input.first, "Error! can't tokenize " + output_word->get_symbol_at(i)+ "\n");
+            delete output_word;
+            output_word = nullptr;
+            break;
+        }
+
     }
 
 
-//     std::cout << output_word << "\n-----------------------------\n";
-    return output_word;
+    return {input.first, output_word};
 }

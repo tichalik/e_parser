@@ -2,6 +2,9 @@
 #define TOKENIZER
 
 #include "word.h"
+#include "logger.h"
+
+
 #include <string>
 #include <sstream>
 
@@ -11,37 +14,21 @@
 
 class Tokenizer
 {
+protected:
+    Logger * logger;
+
 public:
-    virtual Word tokenize(const std::string & input)=0;
+    Tokenizer(Logger * _logger);
+    virtual std::pair<int, Word*> tokenize(const std::pair<int, std::string> & input)=0;
 };
 
-/** \brief every character of input string is its own symbol
- *
- *
- */
 
-class Character_tokenizer: public Tokenizer
-{
-public:
-    virtual Word tokenize(const std::string & input);
-};
-/** \brief every character except whitespaces of input string is its own symbol
- *
- *
- */
-class Letter_tokenizer: public Tokenizer //only considers letters, no white characters
-{
-public:
-   virtual Word tokenize(const std::string & input);
-};
-/** \brief the symbols are didided by spaces
- *
- */
 
 class Between_whitespaces_tokenizer: public Tokenizer
 {
 public:
-    virtual Word tokenize(const std::string & input);
+    Between_whitespaces_tokenizer(Logger * _logger);
+    virtual std::pair<int, Word*> tokenize(const std::pair<int, std::string> & input);
 };
 
 

@@ -5,7 +5,7 @@
 
 class Lojban_tokenizer: public Tokenizer
 {
-    virtual Word tokenize(const std::string & input);
+    virtual Word* tokenize(const std::string & input);
 };
 
 #endif // LOJBAN_TOKENIZER

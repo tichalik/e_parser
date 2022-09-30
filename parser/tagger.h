@@ -6,6 +6,7 @@
 #include <ranges>
 
 #include "word.h"
+#include "logger.h"
 
 /** \brief interface for concurrent tagging of words
  *
@@ -17,15 +18,17 @@
 
 class Tagger
 {
-
+protected:
+    Logger * logger;
 public:
+    Tagger(Logger * _logger);
 
     /** \brief initializes the tagging process
      * takes input from input_buffer until input_buffer->is_eof()==true; after everithing's processes sets output_buffer->set_end_of_input()
      *
      */
 
-    virtual Word tag(const Word & input)=0;
+    virtual std::pair<int, Word*> tag(std::pair<int, Word*> input)=0;
 
 //    virtual void tag_one( Word&)=0;
 };
@@ -40,6 +43,7 @@ public:
 
 class Part_of_speech_tagger: public Tagger
 {
+protected:
     std::vector<std::pair<std::regex, std::string>> classificators = { //includes priorities
         std::pair<std::regex, std::string>("la", "Det"),                  //determinant
         std::pair<std::regex, std::string>("(k|t||cx|nen)i(((u|o|a)j?n?)|e|am|en|al|el)", "Par"),                  //particle?
@@ -58,7 +62,8 @@ class Part_of_speech_tagger: public Tagger
         std::pair<std::regex, std::string>("\\w*", "unknown")                 //UNKNOWN SYMBOL
     };/**< collection of regex expression and tag to give in case of match. Matching with any causes to terminate the iteration, so expressions closer to 0 have higher priority  */
 public:
-    virtual Word tag(const Word & input);
+    Part_of_speech_tagger(Logger * _logger);
+    virtual std::pair<int, Word*> tag(std::pair<int, Word*> input);
 //    virtual void tag_one( Word&);
 };
 

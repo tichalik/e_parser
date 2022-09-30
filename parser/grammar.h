@@ -12,7 +12,7 @@ struct Rule
     std::string left; /**< X */
     std::vector<std::string> right; /**< Y1 Y2 Y3 */
 
-    bool operator ==(const Rule); /**< required for avoiding doubles */
+//    bool operator ==(const Rule); /**< required for avoiding doubles */
 
 };
 
