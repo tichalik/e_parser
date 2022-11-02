@@ -1,0 +1,235 @@
+<nonterminals>
+	<s> s4 </s>
+	<s> s3 </s>
+	<s> s2 </s>
+	<s> s1 </s>
+	<s> s4' </s>
+	<s> s1' </s>
+	<s> rule </s>
+	<s> s2' </s>
+	<s> rule' </s>
+</nonterminals>
+
+<terminals>
+	<s> OPTION_L </s>
+	<s> SLASH </s>
+	<s> AND </s>
+	<s> OR </s>
+	<s> OPTION_R </s>
+	<s> BRACKET_R </s>
+	<s> S4 </s>
+	<s> S3 </s>
+	<s> S2 </s>
+	<s> OPTIONAL_REPETITION </s>
+	<s> BRACKET_L </s>
+	<s> S1 </s>
+	<s> SEPARATOR </s>
+</terminals>
+
+<head> <s> rule </s> </head>
+
+<rules>
+
+	<rule>
+		<r_head>
+			<s> rule' </s>
+		</r_head>
+		<r_body>
+			<s> SEPARATOR </s>
+			<s> s1 </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s1 </s>
+		</r_head>
+		<r_body>
+			<s> s1 </s>
+			<s> s1' </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s1 </s>
+		</r_head>
+		<r_body>
+			<s> s2 </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s1 </s>
+		</r_head>
+		<r_body>
+			<s> S1 </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> rule </s>
+		</r_head>
+		<r_body>
+			<s> S1 </s>
+			<s> rule' </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s2' </s>
+		</r_head>
+		<r_body>
+			<s> AND </s>
+			<s> s2 </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s2 </s>
+		</r_head>
+		<r_body>
+			<s> s2 </s>
+			<s> s2' </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s2 </s>
+		</r_head>
+		<r_body>
+			<s> s3 </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s2 </s>
+		</r_head>
+		<r_body>
+			<s> S2 </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s3 </s>
+		</r_head>
+		<r_body>
+			<s> s3 </s>
+			<s> s3 </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s3 </s>
+		</r_head>
+		<r_body>
+			<s> s4 </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s3 </s>
+		</r_head>
+		<r_body>
+			<s> S3 </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s1' </s>
+		</r_head>
+		<r_body>
+			<s> OR </s>
+			<s> s1 </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s4' </s>
+		</r_head>
+		<r_body>
+			<s> s1 </s>
+			<s> BRACKET_R </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s4' </s>
+		</r_head>
+		<r_body>
+			<s> s1 </s>
+			<s> OPTION_R </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s4' </s>
+		</r_head>
+		<r_body>
+			<s> s1 </s>
+			<s> SLASH </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s4 </s>
+		</r_head>
+		<r_body>
+			<s> s4 </s>
+			<s> OPTIONAL_REPETITION </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s4 </s>
+		</r_head>
+		<r_body>
+			<s> BRACKET_L </s>
+			<s> s4' </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s4 </s>
+		</r_head>
+		<r_body>
+			<s> OPTION_L </s>
+			<s> s4' </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s4 </s>
+		</r_head>
+		<r_body>
+			<s> SLASH </s>
+			<s> s4' </s>
+		</r_body>
+	</rule>
+
+	<rule>
+		<r_head>
+			<s> s4 </s>
+		</r_head>
+		<r_body>
+			<s> S4 </s>
+		</r_body>
+	</rule>
+</rules>

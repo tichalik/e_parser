@@ -1,0 +1,14 @@
+
+	S[NP[la hundo] VP[sxaltas NP[tra knabo]]]
+	S[kie Sp[gxi kuras]] 
+
+# w sumie fajnie by było, gdyby kie łączyło się z czasownikiem -- w takim przypadku jednak musimy zaimplementować inny rodzaj gramatyki, bo ten jest zwarty(?) i połączenia zachodzą tylko między sąsiadami
+S[gxi VP[VP[prenis NP[de NP[la domo]]]NP[tutan NP[gxian mangxilaron]]]] # na razie rozważamy tylko binarne drzewka; powinniśmy to rozszerzyć do n-narnych, w takim przypadku byłoby 
+S[ili VP[sxinsxinsonas NP[en NP[gxiaj posxoj]]]] 
+S[kie Sp[li VP[prenas ilin]]]
+S[nune Sp[li haltas]]
+S[li VP[haltigas NP[cxiun mangxilaron]]]
+S[ili VP[VP[VP[volus u u] VGP[flugi]] ek]]
+
+
+S[VP[mangxas bone] mi]
