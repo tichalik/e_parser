@@ -56,7 +56,7 @@ int main(int args, char* argv[])
 
         ///filling the buffer with content of input files
         Reader* reader = new Reader(logger);
-        for (const std::pair<int, std::string> &s: reader->read("../fgs") )
+        for (const std::pair<int, std::string> &s: reader->read("../input") )
             string_buffer->push(s);
 
         ///disposing of reader
