@@ -1,0 +1,41 @@
+source: https://eowikipediaorg/wiki/Brodado
+
+#S[Brodado VP[V[estas] NP[antikva NP[formo Pos[de NP[ornama kudrado]]]]]] 
+#S[NP[Linioj Con[kaj bildoj]] VP[VP[VP[estas farata] NP[per VP-inf[kudri fadenon]]] NP[sur NP[alian materialon]]]] #Conconjunction VP-infinfinitive verb phrase 
+#S[Tradicie SP[oni VP[VP[uzas brodadon] NP[por VP-inf[ornami NP[vestojn Con[kaj meblojn]]]]]]]
+#S[Brodi VP[estas VP-inf[VP[VP[kudrornami reliefe] teksaĵojn] NP[per NP[NP[silko Con[lano lino]] AP[kolorigitaj Alt[Alt[aux orofadeno Alt[aux argxentofadeno]]]]]]]]] 
+#S[NP[La brodaĵoj] VP[VP[VP[povas V-inf[esti AP[bareliefa Alt[altreliefa Alt[aux surmetata]]]]]]]] #ORZECZENIE IMIENNE???
+
+#S[Li VP[indikas etimologion el kelta broud (pikilo) kaj el latina acupingere #połącznenie nie sąsiadujące ze sobą -- "indikas el kelta[]"
+
+#S[NPEn cxinio brodado estis delonge konata sed ankaux en la malnova Hindio kaj Egiptio oni brodadis #kolejne -- en cxinijo estis
+
+
+##tutaj poniżej nagle zmieniamy Particle + NP =/= NP Particle + NP = AdvP Czy to działa?? trochęv:
+#S[SP[NP[La NP[unuaj brodaĵoj]] VP[estis AdvP[nur NP[geometriaj figuroj]]]] Dis[sed SP[NP[la asirianoj] VP[AdvP[sxajne AP[la unuaj]] VP[VP[brodis NP[bestojn Con[kaj homojn]]] AdvP[sur NP[siajn NP[vestaĵojn Con[kaj kurtenojn]]]]]]]]] 
+#S[SP[AdvP[De ili] VP[lernis NP[la grekoj]] Con[kaj SP[SP[VP[AdvP[de NP[cxi tiuj]] VP[lernis NP[la romianoj]]]] Dep[kiuj VP[VP[nomis brodaĵon] NP[frigaj verkoj]]]]]]] 
+#sum la mezepoko en la monahxejoj monahxinoj brodis religiajn vestojn kaj altarajn kaj pregxejajn tukojn
+#kelkaj maloftaj specimenoj kiel ekzemple germana imperiestra entronigxmantelo montras ankoraux hodiaux la nivelon de la tiama brodarto
+#sed dum la 11-a jarcento la araboj superis tiujn verkojn 
+iam edukado igxis sekulara ankaux brodado igxis tia 
+#unue en Britio sed poste en Burgundio gxi atingis sian plej altan nivelon dum la 14-a jarcento kaj de tiam gxis nun nur malaltigxis
+ekzistas masxinoj por brodadobrodmasxinoj 
+brodmasxinoj brodas laux programoj de brodado 
+kutime oni preparas programojn per komputilo uzante specialan programaron 
+la programoj kutime povas difini multkoloran brodadon
+la brodmasxinoj povas esti hejmaj kaj industriaj
+la hejmaj brodmasxinoj estas kutime kudromasxinoj kun aldona funkcio de brodado 
+la hejmaj brodmasxinoj kutime povas brodi samtempe kun nur unu koloro 
+multkolorajn brodaĵojn oni povas plenumi sxangxante fadenon post fino de brodado de certa koloro 
+praktike tio okazas en tiu maniero ke post brodado de unu koloro la programo de brodado haltigas la brodmasxinon kaj atendas sxangxon de fadeno al alia koloro 
+tiam oni devas sxangxi ambaux fadenojnsupran kaj suban
+la brodmasxinoj estas multekostaj tial atentu cxe acxetado al sekvantaj aferoj:
+la kvalito de brodmasxinoj ne estas cxiam bona
+brodmasxinoj devas havi reguladon de tensio de ambaux fadenojsupra kaj suba fadeno 
+brodmasxinoj kun regulado de tensio nur de supra fadeno ne brodas bone
+cxe acxetado nepre provu la masxinon 
+se la masxino ne brodas kontinue dum 15 minutoj ne acxetu gxin
+cxe brodado atentu ke la partoj movantaj de brodmasxino ne tusxu eksterajn objektojn cxar tio povas rompi la masxinon 
+por tio ne starigu la masxinon proksime de muro aux meblaro
+la industriaj masxinoj estas kutime nur brodmasxinoj sen kombino kun kudromasxino 
+#ili povas kutime brodi samtempe kun kelkaj koloroj ekzemple 6 koloroj 
