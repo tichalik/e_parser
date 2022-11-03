@@ -21,7 +21,7 @@
 
 
 ///number of threads the parsing runs on
-const int NO_THREADS = 1;
+const int NO_THREADS = 64;
 
 
 
@@ -75,19 +75,21 @@ int main(int args, char* argv[])
         ///template parser that will be cloned later
         Parser * original_parser = new CYK_parser(transformed_grammar, logger);
 
+        ///initializing the pipeline elements
+        Tokenizer * tokenizer = new Between_spaces_with_normalization(logger);
+        Tagger * tagger = new Part_of_speech_tagger(logger);
+        Parser * parser = new CYK_parser(transformed_grammar, logger);
+
         ///if grammar passed to the parser does not create critical errors
-        if (original_parser->is_everything_ok())
+        if (parser->is_everything_ok())
         {
              ///the process running concurrently
              for (int i=0; i<NO_THREADS; i++)
                  thread_poll.push_back(std::thread(
 
-                                  [original_parser, logger, string_buffer, parsed_buffer] ()
+                                  [&parser, &tagger, &tokenizer, logger, string_buffer, parsed_buffer] ()
                                   {
-                                      ///initializing the pipeline elements
-                                        Tokenizer * tokenizer = new Between_spaces_with_normalization(logger);
-                                        Tagger * tagger = new Part_of_speech_tagger(logger);
-                                        Parser * parser = original_parser->clone();
+
                                       while(!string_buffer->is_eof())
                                         {
                                             ///tokenization
@@ -111,10 +113,8 @@ int main(int args, char* argv[])
                                                 }
                                             }
                                         }
-                                        ///dealocation
-                                        delete tokenizer;
-                                        delete tagger;
-                                        delete parser;
+
+
                                   }));
 
             ///synchronization
@@ -124,7 +124,10 @@ int main(int args, char* argv[])
             ///no more input will be added to this buffer
             parsed_buffer->set_end_of_input();
 
-            delete original_parser;
+            ///dealocation
+            delete tokenizer;
+            delete tagger;
+            delete parser;
 
             ///printing out the results
             while (!parsed_buffer->is_eof())

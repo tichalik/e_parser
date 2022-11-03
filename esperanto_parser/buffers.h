@@ -19,7 +19,7 @@
 template<class T> //T must have default constructor for making the EOF object
 class Buffer
 {
-    static const int max_size=1000; /**< The maximal number of elements in the buffer */
+    static const int max_size=100000; /**< The maximal number of elements in the buffer */
 
 //    bool end_of_input;
 //    std::mutex lock_end_of_input;
