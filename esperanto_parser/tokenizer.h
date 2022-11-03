@@ -55,6 +55,28 @@ public:
     virtual std::pair<int, Word*> tokenize(const std::pair<int, std::string> & input);
 };
 
+/** \brief splits tokens at the space character. Sets everything in lowercase, removes nonalphanumeric characters
+ *
+ */
+
+
+class Between_spaces_with_normalization: public Tokenizer
+{
+public:
+    /** \brief constructor
+     * requires logger for error handling
+     */
+    Between_spaces_with_normalization(Logger * _logger);
+    /** \brief divides a line into a list of tokens
+     *
+     * \param input pair of line_id and line to be tokenized
+     * \return pair of line_id and tokenization results as a WORD; NO CRITICALL ERRORS COULD ARISE HERE
+     *
+     */
+    virtual std::pair<int, Word*> tokenize(const std::pair<int, std::string> & input);
+};
+
+
 
 #endif // TOKENIZER
 

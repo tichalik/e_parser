@@ -21,7 +21,7 @@
 
 
 ///number of threads the parsing runs on
-const int NO_THREADS = 4;
+const int NO_THREADS = 1;
 
 
 
@@ -85,7 +85,7 @@ int main(int args, char* argv[])
                                   [original_parser, logger, string_buffer, parsed_buffer] ()
                                   {
                                       ///initializing the pipeline elements
-                                        Tokenizer * tokenizer = new Between_whitespaces_tokenizer(logger);
+                                        Tokenizer * tokenizer = new Between_spaces_with_normalization(logger);
                                         Tagger * tagger = new Part_of_speech_tagger(logger);
                                         Parser * parser = original_parser->clone();
                                       while(!string_buffer->is_eof())
@@ -93,7 +93,7 @@ int main(int args, char* argv[])
                                             ///tokenization
                                             std::pair<int, Word*> tokenized = tokenizer->tokenize(string_buffer->pop());
                                             ///checking if tokenization was successful
-                                                ///with `Between_whitespaces_tokenizer` it is impossible to get a nullptr
+                                                ///with `Between_spaces_with_normalization` it is impossible to get a nullptr
                                                 ///but for the sake of completeness
                                             if (tokenized.second != nullptr)
                                             {
@@ -154,8 +154,8 @@ int main(int args, char* argv[])
 
     ///no more text will be send to logger;
     ///starting printing out
-    logger->write_errors_out();
-    logger->write_messages_out();
+//    logger->write_errors_out();
+//    logger->write_messages_out();
 
 
     ///disposal of the logger
